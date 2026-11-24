@@ -1,0 +1,50 @@
+name: Build & Deploy docs
+
+on:
+#  push:
+#    branches:
+#      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    if: startsWith(github.event.head_commit.message, 'gh-pages - ')
+    runs-on: [self-hosted, linux, docker, stacks]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.ref }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # Create and activate an isolated environment
+      - name: Build site
+        run: |
+          python -m venv .venv
+          .venv/bin/python -m pip install --upgrade pip
+          .venv/bin/python -m pip install "mkdocs>=1.6.1" mkdocs-material mkdocs-minify-plugin
+          .venv/bin/python -m mkdocs --version
+          .venv/bin/python -m mkdocs build --strict
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    if: startsWith(github.event.head_commit.message, 'gh-pages - ')
+    needs: build
+    runs-on: [self-hosted, linux, docker, stacks]
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

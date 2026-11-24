@@ -1,0 +1,71 @@
+site_name: Vlad’s Homelab
+site_description: Tiny-but-mighty homelab - topology, services and lessons learned.
+site_url: https://vladstpetre.github.io/homelab/
+repo_url: https://github.com/VladStPetre/homelab
+use_directory_urls: true
+
+theme:
+  name: material
+  logo: assets/images/logo_black_transparent_400x400.png
+  favicon: assets/images/logo_yellow_icon.png
+  palette:
+    - scheme: slate        # dark theme
+      primary: teal
+      accent: amber
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+    - scheme: default      # light theme
+      primary: lime
+      accent: amber
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+  features:
+    - navigation.tabs
+    - navigation.instant
+    - content.code.copy
+    - toc.integrate
+  font:
+    text: Inter
+    code: Fira Code
+
+plugins:
+  - search
+#  - sitemap
+#  - mkdocs-minify-plugin
+
+nav:
+  - Home: index.md
+  - Services:
+      - Overview: services/_index.md
+      - Backup: services/backup.md
+      - Gh-Runner: services/gh-runner.md
+      - Home Assistant: services/home-assistant.md
+      - Immich: services/immich.md
+      - Infra: services/infra.md
+      - Media: services/media.md
+      - Monitoring: services/monitoring.md
+      - Utils: services/utils.md
+  - About: about.md
+
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true
+  - pymdownx.superfences
+  - pymdownx.details
+  - pymdownx.tabbed
+  - pymdownx.blocks.caption
+  - attr_list
+  - md_in_html
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/VladStPetre
+
+extra_css:
+  - assets/stylesheets/extra.css
+extra_javascript:
+  - assets/scripts/custom.js
